@@ -6,6 +6,7 @@ from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.common.by import By
 from decouple import config
+import numpy
 
 class waitGetElm:
     def __init__(self, driver:webdriver.Chrome):
@@ -32,61 +33,79 @@ def getDriver(profile:str):
     return driver
 
 class Bots:
-    def __init__(self, driver):
+    def __init__(self, driver:webdriver.Chrome):
         self.driver = driver
 
-    def apple(self, link="https://www.apple.com/airpods/"):
+    def apple(self, link:str, price_range:tuple):
         driver = self.driver
-
-        email = config('EMAIL')
-        password = config('PASSWORD')
+        getElement = waitGetElm(driver)
         
         driver.get("https://www.apple.com")
 
-        getElement = waitGetElm(driver)
-
-        getElement.now(By.XPATH, '//*[@id="ac-gn-bag"]/div/a').click()
-
-        getElement.now(By.XPATH, '//*[@id="ac-gn-bagview-content"]/nav/ul/li[5]/a').click()
-
-        emailInput = getElement.now(By.XPATH, '//*[@id="signIn.customerLogin.appleId"]')
-        typeKeys(emailInput, email)
-
-        passwordInput = getElement.now(By.XPATH, '//*[@id="signIn.customerLogin.password"]')
-        typeKeys(passwordInput, password)
-
-        passwordInput.send_keys(Keys.RETURN)
-
-
-    def bestbuy(driver):
-        email = 'ayaz.parbtani@gmail.com'
-        password = 'Aparb003@'
-        driver.get("https://www.bestbuy.com/cart")
         try:
-            driver.find_element_by_xpath('/html/body/div[2]/div/div/div/div[1]/div[2]/a[2]').click()
+            getElement.now(By.XPATH, '//*[@id="ac-gn-bag"]/div/a').click()
+            signInBtn = getElement.now(By.XPATH, '//*[@id="ac-gn-bagview-content"]/nav/ul/li[5]/a')
+            if "sign out" not in signInBtn.text.lower():
+                signInBtn.click()
+                email = config('APPLE_EMAIL')
+                password = config('APPLE_PASSWORD')
+                signInOn = True
+                while signInOn:
+                    emailInput = getElement.now(By.XPATH, '//*[@id="signIn.customerLogin.appleId"]')
+                    typeKeys(emailInput, email)
+
+                    passwordInput = getElement.now(By.XPATH, '//*[@id="signIn.customerLogin.password"]')
+                    typeKeys(passwordInput, password)
+                    passwordInput.send_keys(Keys.RETURN)
+                    wait(5)
+                    print(driver.current_url)
+                    try:
+                        signIn = getElement.now(By.CLASS_NAME, 'form-button')
+                        signIn.click()
+                    except:
+                        signInOn = False
+        except:
+            print("Sign In Faild")       
+
+        driver.get(link)
+        price_tag = float(getElement.now(By.XPATH, '//*[@id="root"]/div[3]/div[1]/div[1]/div/div[1]/div/span').text.replace('$',''))
+        print(price_tag)
+
+        if price_range[0] < price_range[0]+1:
+            getElement.now(By.ID, "add-to-cart").click() # click on Add to  cart
+            getElement.now(By.ID, "shoppingCart.actions.checkout").click() # click on Add to  cart
+    def bestbuy(self, link:str, price_range:tuple):
+        driver = self.driver
+        getElement = waitGetElm(driver)
+        driver.get("https://www.bestbuy.com")
+
+        try:
+            getElement.now(By.XPATH, "/html/body/div[2]/div/div/div/div[1]/div[2]/a[2]", waitTime=5).click()
         except:
             pass
+        try:
+            getElement.now(By.XPATH, '//*[@id="widgets-view-email-modal-mount"]/div/div/div[1]/div/div/div/div/button',waitTime=5).click()
+        except:
+            pass
+        try:
+            getElement.now(By.CLASS_NAME, 'account-button',waitTime=5).click()
+            getElement.now(By.CLASS_NAME, 'sign-in-btn',waitTime=5).click()
+        except:
+            pass
+        emailInput = getElement.now(By.XPATH, '//*[@id="fld-e"]',waitTime=5)
+        passwordInput = getElement.now(By.XPATH, '//*[@id="fld-p1"]',waitTime=5)
+
+        typeKeys(emailInput, config("BESTBUY_EMAIL"))
+        typeKeys(passwordInput, config("BESTBUY_PASSWORD"))
         
-        driver.find_element_by_class_name('account-button').click()
-        wait(3)
-        driver.find_element_by_class_name('sign-in-btn').click()
-
-        # login part
-        # try:
-        emailInput = driver.find_element_by_xpath('//*[@id="fld-e"]')
-        typeKeys(emailInput, email)
-
-        passwordInput = driver.find_element_by_xpath('//*[@id="fld-p1"]')
-        typeKeys(passwordInput, password)
-
-        passwordInput.send_keys(Keys.RETURN)
-        # except:
-        #     pass
-
+        getElement.now(By.XPATH, '/html/body/div[1]/div/section/main/div[2]/div[1]/div/div/div/div/form/div[3]/button', waitTime=5).click()
         
-        wait(2)
-    
-# bestbuy(getDriver("bestbuy"))
+        getElement.now(By.XPATH, '/html/body/div[1]/div/section/main/div[2]/div[1]/div/div/div/div/form/fieldset/fieldset/div[3]', waitTime=5).click()
+
+        getElement.now(By.XPATH, '/html/body/div[1]/div/section/main/div[2]/div[1]/div/div/div/div/form/div/button', waitTime=5).click()
+
+
 driver = getDriver("bestbuy")
 bot = Bots(driver)
-bot.apple()
+link = 'https://www.apple.com/us-hed/shop/product/MRXJ2AM/A/airpods-with-wireless-charging-case'
+bot.bestbuy(link, (100, 199))
