@@ -1,8 +1,8 @@
 import imaplib
 import email
 from decouple import config
-
-
+from bs4 import BeautifulSoup
+from time import sleep as wait
 host = 'imap.gmail.com'
 username = config("G_EMAIL")
 password = config("G_PASSWORD")
@@ -17,10 +17,10 @@ class FindWith(object):
     """
     Set of supported search strategies.
     """
-    BESTBUY = "Fwd: Your Password Reset verification code"
+    BESTBUY = ('SUBJECT', '"Your Password Reset verification code"', 'FROM', '"emailinfo.bestbuy.com"')
 
 def get_verification_code(find_with:str):
-    _, search_data = mail.search(None, 'SUBJECT', f'"{find_with}"')
+    _, search_data = mail.search(None, *find_with)
     verification_code = 0
 
     for num in search_data[0].split():
@@ -33,6 +33,16 @@ def get_verification_code(find_with:str):
                 body = part.get_payload(decode=True)
                 msg_body = body.decode()
                 if FindWith.BESTBUY == find_with and "Verification Code:" in msg_body:
+                    print("Waiting for 5 secs... ")
+                    wait(5)
+                    verification_code = msg_body.split("Verification Code:")[-1].split('*')[0].strip('\r\n')
+            elif part.get_content_type()=="text/html":
+                body = part.get_payload(decode=True)
+                msg_body = BeautifulSoup(body.decode(), 'html5lib').findAll(text=True)
+                verification_code = list(set([word for word in msg_body if word.isdigit()]))[0]
+                if FindWith.BESTBUY == find_with and "Verification Code:" in msg_body:
+                    print("Waiting for 5 secs... ")
+                    wait(5)
                     verification_code = msg_body.split("Verification Code:")[-1].split('*')[0].strip('\r\n')
         
     return verification_code
