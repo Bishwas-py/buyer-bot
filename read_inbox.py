@@ -3,14 +3,6 @@ import email
 from decouple import config
 from bs4 import BeautifulSoup
 from time import sleep as wait
-host = 'imap.gmail.com'
-username = config("G_EMAIL")
-password = config("G_PASSWORD")
-
-mail = imaplib.IMAP4_SSL(host)
-mail.login(username, password)
-
-mail.select("inbox")
 
 
 class FindWith(object):
@@ -20,6 +12,13 @@ class FindWith(object):
     BESTBUY = ('SUBJECT', '"Your Password Reset verification code"', 'FROM', '"emailinfo.bestbuy.com"')
 
 def get_verification_code(find_with:str):
+    host = 'imap.gmail.com'
+    username = config("G_EMAIL")
+    password = config("G_PASSWORD")
+    mail = imaplib.IMAP4_SSL(host)
+    mail.login(username, password)
+    mail.select("inbox")
+
     _, search_data = mail.search(None, *find_with)
     verification_code = 0
 

@@ -1,42 +1,13 @@
-from chromedriver_py import binary_path
+import warnings
 from selenium import webdriver
 from selenium.webdriver.common.keys import Keys
 from time import sleep as wait
-from selenium.webdriver.support.ui import WebDriverWait
-from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.common.by import By
 from decouple import config
-import numpy
 from read_inbox import get_verification_code, FindWith
+from additionals import *
 
-class waitGetElm:
-    def __init__(self, driver:webdriver.Chrome):
-        self.driver = driver
 
-    def now(self, by_, object, multi=False, waitTime=10):
-        waitTill = WebDriverWait(self.driver, waitTime)
-        if multi:
-            elementEC = EC.visibility_of_all_elements_located((by_, object))
-        if not multi:
-            elementEC = EC.visibility_of_element_located((by_, object))
-        return waitTill.until(elementEC) 
-
-def typeKeys(input, key:str):
-    for letter in key:
-        wait(0.01)
-        input.send_keys(letter)
-
-def getDriver(profile:str):
-    options = webdriver.ChromeOptions()
-    options.add_argument('--start-maximized')
-    options.add_argument('--no-sandbox') # Bypass OS security model
-    options.add_argument('--disable-blink-features=AutomationControlled') # For ChromeDriver version 79.0.3945.16 or over
-    options.add_experimental_option("excludeSwitches", ["enable-automation"]) # For older ChromeDriver under version 79.0.3945.16
-    options.add_experimental_option('useAutomationExtension', False)
-
-    options.add_argument(f'--user-data-dir=D:\Projects\profile\{profile}')
-    driver = webdriver.Chrome(executable_path=binary_path, options=options)
-    return driver
 
 class Bots:
     def __init__(self, driver:webdriver.Chrome):
@@ -53,15 +24,13 @@ class Bots:
             signInBtn = getElement.now(By.XPATH, '//*[@id="ac-gn-bagview-content"]/nav/ul/li[5]/a')
             if "sign out" not in signInBtn.text.lower():
                 signInBtn.click()
-                email = config('APPLE_EMAIL')
-                password = config('APPLE_PASSWORD')
                 signInOn = True
                 while signInOn:
                     emailInput = getElement.now(By.XPATH, '//*[@id="signIn.customerLogin.appleId"]')
-                    typeKeys(emailInput, email)
+                    typeKeys(emailInput, 'APPLE_EMAIL')
 
                     passwordInput = getElement.now(By.XPATH, '//*[@id="signIn.customerLogin.password"]')
-                    typeKeys(passwordInput, password)
+                    typeKeys(passwordInput, 'APPLE_PASSWORD')
                     passwordInput.send_keys(Keys.RETURN)
                     wait(5)
                     print(driver.current_url)
@@ -74,44 +43,49 @@ class Bots:
             print("Sign In Faild")       
 
         driver.get(link)
-        price_tag = float(getElement.now(By.XPATH, '//*[@id="root"]/div[3]/div[1]/div[1]/div/div[1]/div/span').text.replace('$',''))
-        print(price_tag)
+        price = float(getElement.now(By.XPATH, '//*[@id="root"]/div[3]/div[1]/div[1]/div/div[1]/div/span').text.replace('$',''))
+        print(price)
 
-        if price_range[0] < price_range[0]+1:
+        if price_range[0] < price < price_range[1]+1:
             getElement.now(By.ID, "add-to-cart").click() # click on Add to  cart
             getElement.now(By.ID, "shoppingCart.actions.checkout").click() # click on Add to  cart
-    def bestbuy(self, link:str, price_range:tuple):
+
+    def bestbuy(self, link:str, price_range:tuple, quantity=1, skip=False):
         driver = self.driver
         getElement = waitGetElm(driver)
         driver.get("https://www.bestbuy.com")
 
-        try:
-            getElement.now(By.XPATH, '//*[@id="survey_invite_no"]', waitTime=3).click()
-        except:
-            pass
-        
-        try:
-            getElement.now(By.XPATH, "/html/body/div[2]/div/div/div/div[1]/div[2]/a[2]", waitTime=3).click()
-        except:
-            pass
+        if not skip:
+            try:
+                getElement.now(By.XPATH, '//*[@id="survey_invite_no"]', waitTime=3).click()
+            except:
+                pass
+            
+            try:
+                getElement.now(By.XPATH, "/html/body/div[2]/div/div/div/div[1]/div[2]/a[2]", waitTime=3).click()
+            except:
+                pass
 
-        try:
-            getElement.now(By.XPATH, '//*[@id="widgets-view-email-modal-mount"]/div/div/div[1]/div/div/div/div/button',waitTime=3).click()
-        except:
-            pass
+            try:
+                getElement.now(By.XPATH, '//*[@id="widgets-view-email-modal-mount"]/div/div/div[1]/div/div/div/div/button',waitTime=3).click()
+            except:
+                pass
 
-        try:
-            getElement.now(By.CLASS_NAME, 'account-button',waitTime=5).click()
-            getElement.now(By.CLASS_NAME, 'sign-in-btn',waitTime=5).click()
-            skipAllProcess = False
-        except:
+            try:
+                getElement.now(By.CLASS_NAME, 'account-button',waitTime=5).click()
+                getElement.now(By.CLASS_NAME, 'sign-in-btn',waitTime=5).click()
+                skipAllProcess = False
+            except:
+                skipAllProcess = True
+        else:
             skipAllProcess = True
-        if skipAllProcess:
+
+        if not skipAllProcess:
             try:
                 emailInput = getElement.now(By.XPATH, '//*[@id="fld-e"]',waitTime=5)
                 passwordInput = getElement.now(By.XPATH, '//*[@id="fld-p1"]',waitTime=5)
-                typeKeys(emailInput, config("BESTBUY_EMAIL"))
-                typeKeys(passwordInput, config("BESTBUY_PASSWORD"))
+                typeKeys(emailInput, "BESTBUY_EMAIL")
+                typeKeys(passwordInput, "BESTBUY_PASSWORD")
                 getElement.now(By.XPATH, '/html/body/div[1]/div/section/main/div[2]/div[1]/div/div/div/div/form/div[3]/button', waitTime=5).click()
             except Exception as inst:
                 d = inst
@@ -130,10 +104,8 @@ class Bots:
                     try:
                         errorMsg = getElement.now(By.XPATH, '/html/body/div[1]/div/section/main/div[2]/div[1]/div/div/div[1]/div', waitTime=5)
                         getElement.now(By.XPATH, '/html/body/div[1]/div/section/main/div[2]/div[1]/div/div/div/div/form/div[2]/button', waitTime=5).click()
-                        print('WAITING...')
                         wait(5)
                     except:
-                        print('ERROR...')
                         continueVerification = False
                         verificationCodeinput.sendKeys(Keys.DELETE)
 
@@ -150,12 +122,64 @@ class Bots:
                 print(d)
 
         driver.get(link)
-        price_tag = float(getElement.now(By.CLASS_NAME, 'price-box').text)
-        print(price_tag)
-        if price_range[0] < price_range[0]+1:
-            print('Got it')
 
-driver = getDriver("new_profile2")
+        price = getElement.now(By.XPATH, "//*[contains(@class, 'priceView-customer-price')]/span")
+        price = get_price(price)
+        
+        # get price
+        if price_range[0] < price_range[0]+1:
+            # Click on "Add to cart"
+            getElement.now(By.CLASS_NAME, 'add-to-cart-button').click()
+            # Click on go to cart
+            getElement.now(By.XPATH, "//*[contains(@class, 'go-to-cart-button')]/a").click()
+            # select quantity
+            try:
+                getElement.now(By.XPATH, "//*[contains(@class, 'fluid-item__quantity')]/option[10]").click()
+            except:
+                print("\nSkipped.....\n")
+
+            quantityInput = getElement.now(By.XPATH, "//*[contains(@class, 'fluid-item__quantity')]/input[1]")
+            quantityInput.send_keys(Keys.CONTROL + "a");
+            quantityInput.send_keys(Keys.DELETE);
+            wait(5)
+            quantityInput.send_keys(quantity)
+    
+    def walmart(self, link:str, price_range:tuple, quantity=1, skip=False):
+        driver = self.driver
+        getElement = waitGetElm(driver)
+        driver.get("https://www.walmart.com/account/login?tid=0&returnUrl=%2F")
+        PressAndHold(driver, getElement)
+
+        try:
+            # Account Login stuff
+            emailInput = getElement.now(By.XPATH, '//*[@id="email"]')
+            passwordInput = getElement.now(By.XPATH, '//*[@id="password"]')
+            typeKeys(emailInput, "WALMART_EMAIL")
+            typeKeys(passwordInput, "WALMART_PASSWORD")
+            # press the sign in button
+            getElement.now(By.XPATH, '//*[@id="sign-in-form"]/div[1]/div/button').click()
+        except:
+            pass
+        PressAndHold(driver, getElement)
+        driver.get(link)
+
+        price = get_price(getElement.now(By.XPATH, '//*[@id="price"]/div/span[1]/span/span[2]'))
+        print(f"{price}: {price_range[0] < price < price_range[1]+1}")
+        if price_range[0] < price < price_range[1]+1:
+            quantityInput = getElement.now(By.XPATH, f'//*[@id="add-on-atc-container"]/div[1]/section/div[1]/div[2]/select/option[{quantity}]')
+            quantityInput.click()
+            getElement.now(By.XPATH, '//*[@id="add-on-atc-container"]/div[1]/section/div[1]/div[3]/button').click() # add to cart
+            getElement.now(By.XPATH, "//div[contains(@class, 'cart-pos-proceed-to-checkout')]/div/button//*[contains(text(),'Check out')][1]").click() # check out
+            getElement.now(By.XPATH, "//button[contains(@class, 'cxo-continue-btn')]//*[contains(text(),'Continue')][1]").click() # continue
+            PressAndHold(driver, getElement)
+            
+            
+
+
+
+
+
+driver = getDriver("Ayaz Prajapati")
 bot = Bots(driver)
-link = 'https://www.bestbuy.com/site/microsoft-surface-pro-7-12-3-touch-screen-intel-core-i5-8gb-memory-128gb-ssd-device-only-latest-model-platinum/6375055.p?skuId=6375055'
-bot.bestbuy(link, (100, 199))
+link = 'https://www.walmart.com/ip/Instant-Power-Heavy-Duty-Drain-Opener-67-6-fl-oz/17133603'
+bot.walmart(link, (0, 10), 2, True)
