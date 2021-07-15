@@ -4,8 +4,8 @@ from selenium.webdriver.common.keys import Keys
 from time import sleep as wait
 from selenium.webdriver.common.by import By
 from decouple import config
-from read_inbox import get_verification_code, FindWith
-from additionals import *
+from.read_inbox import get_verification_code, FindWith
+from.additionals import *
 from selenium.common.exceptions import TimeoutException
 
 class Bots:
@@ -21,9 +21,8 @@ class Bots:
                 driver.find_element_by_xpath('//*[@id="survey_invite_no"]').click()
             except:
                 pass
-            
             try:
-                driver.find_element_by_xpath("/html/body/div[2]/div/div/div/div[1]/div[2]/a[2]").click()
+                driver.find_element_by_xpath('//button[@class="c-close-icon c-modal-close-icon"]').click()
             except:
                 pass
 
@@ -33,11 +32,8 @@ class Bots:
                 pass
 
             try:
-                print("Try...")
                 driver.find_element_by_xpath('//button[contains(@class, "account-button")]//*[contains(text(), "Account")]').click()
-                print("Try.....")
                 driver.find_element_by_xpath('//a[contains(@class, "sign-in-btn")][contains(text(), "Sign In")]').click()
-                print("Try.......")
                 skipAllProcess = False
             except:
                 skipAllProcess = True
@@ -97,6 +93,7 @@ class Bots:
                 driver.get(link)
                 price = driver.find_element_by_xpath("//*[contains(@class, 'priceView-customer-price')]/span")
                 price = get_price(price)
+                print(config("BESTBUY_MIN"))
                 # get price
                 if int(config('BESTBUY_MIN')) < price < int(config('BESTBUY_MAX'))+1:
                     # Click on "Add to cart"
@@ -104,21 +101,12 @@ class Bots:
                     # Click on go to cart
                     driver.find_element_by_xpath("//*[contains(@class, 'go-to-cart-button')]/a").click()
                     # select quantity
-                    try:
-                        driver.find_element_by_xpath("//*[contains(@class, 'fluid-item__quantity')]/option[10]").click()
-                    except:
-                        print("\nSkipped.....\n")
-
-                    quantityInput = driver.find_element_by_xpath("//*[contains(@class, 'fluid-item__quantity')]/input[1]")
                     
-                    quantityInput.send_keys(Keys.CONTROL + "a");
-                    quantityInput.send_keys(Keys.DELETE);
-                    wait(5)
-                    quantityInput.send_keys(quantity)
+                    driver.find_element_by_xpath(f"//*[contains(@class, 'fluid-item__quantity')]/option[{quantity}]").click()
                     break
 
 
-driver = getDriver("Ayaz Prasjit")
+driver = getDriver("Ayaz Prasad")
 bot = Bots(driver)
-link = 'https://www.bestbuy.com/site/microsoft-surface-pro-7-12-3-touch-screen-intel-core-i3-4gb-memory-128gb-ssd-with-black-type-cover-latest-model-platinum/6374985.p?skuId=6374985'
-bot.bestbuy(link, 10, skip=True, clear_cart=True)
+link = 'https://www.bestbuy.com/site/teach-tech-mech-5-mechanical-coding-robot/6394980.p?skuId=6394980'
+bot.bestbuy(link, 2, skip=False)
