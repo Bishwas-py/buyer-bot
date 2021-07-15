@@ -1,5 +1,4 @@
 selenium
 python-decouple
-chromedriver-py
-numpy
+chromedriver-py==91.0.*
 bs4
