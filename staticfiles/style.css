@@ -1,0 +1,271 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Poppins", sans-serif;
+}
+
+h1 {
+  color: #426696;
+  font-weight: 600;
+  font-size: 2rem;
+  opacity: 0.8;
+}
+h2,
+p {
+  color: #658ec6;
+  font-weight: 500;
+  opacity: 0.8;
+}
+
+h2 {
+  font-size: small;
+}
+
+h3 {
+  color: #426696;
+  font-weight: 600;
+  opacity: 0.8;
+}
+
+main {
+  font-family: "Poppins", sans-serif;
+  min-height: 100vh;
+  background: linear-gradient(to right top, #65dfc9, #6cdbeb);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.glass {
+  background: white;
+  min-height: 80vh;
+  width: 87%;
+  background: linear-gradient(
+    to right bottom,
+    rgba(255, 255, 255, 0.7),
+    rgba(255, 255, 255, 0.3)
+  );
+  border-radius: 2rem;
+  z-index: 2;
+  backdrop-filter: blur(2rem);
+  display: flex;
+}
+.circle1,
+.circle2 {
+  background: white;
+  background: linear-gradient(
+    to right bottom,
+    rgba(255, 255, 255, 0.8),
+    rgba(255, 255, 255, 0.3)
+  );
+  height: 20rem;
+  width: 20rem;
+  position: absolute;
+  border-radius: 50%;
+}
+
+.circle1 {
+  top: 5%;
+  right: 15%;
+}
+.circle2 {
+  bottom: 5%;
+  left: 10%;
+}
+.dashboard {
+  /* flex: 1; */
+  /* display: flex;
+  flex-direction: column; */
+  padding-top: 20px;
+  align-items: center;
+  justify-content: space-evenly;
+  text-align: center;
+  background: linear-gradient(
+    to right bottom,
+    rgba(255, 255, 255, 0.7),
+    rgba(255, 255, 255, 0.3)
+  );
+  border-radius: 2rem;
+}
+.links{
+  margin-top: 25px;
+}
+.link {
+  display: flex;
+  margin: 0rem 0rem;
+  padding: 1rem 5rem;
+  align-items: center;
+  cursor: pointer;
+}
+.link:hover{
+  background: linear-gradient(rgba(0, 204, 255, 0.24), rgb(252, 254, 255));
+}
+.link h2 {
+  padding: 0rem 2rem;
+}
+
+.link img{
+  width: 26px;
+}
+
+.games {
+  flex: 2;
+}
+
+.pro {
+  background: linear-gradient(to right top, #65dfc9, #6cdbeb);
+  border-radius: 2rem;
+  color: white;
+  padding: 1rem;
+  position: relative;
+}
+
+.pro img {
+  position: absolute;
+  top: -10%;
+  right: 10%;
+}
+.pro h2 {
+  width: 40%;
+  color: white;
+  font-weight: 600;
+}
+
+/* GAMES */
+.status {
+  /* margin-bottom: 0.5rem; */
+}
+.status h1{
+  width: 80%;
+  display: inline-block;
+}
+a {
+  text-decoration: none;
+}
+
+.status input {
+  background: linear-gradient(
+    to right bottom,
+    rgba(255, 255, 255, 0.7),
+    rgba(255, 255, 255, 0.3)
+  );
+  border: none;
+  width: 50%;
+  padding: 0.5rem;
+  border-radius: 2rem;
+}
+
+.games {
+  margin: 2rem;
+  display: flex;
+  flex-direction: column;
+  /* justify-content: space-evenly; */
+}
+
+.user {
+  background: linear-gradient(rgba(255, 255, 255, 0), rgba(0, 162, 255, 0.349));
+  padding-bottom: 19px;
+}
+
+.card {
+  display: inline-block;
+  background: linear-gradient( to left top, rgba(255, 255, 255, 0.8), rgba(255, 255, 255, 0.5) );
+  border-radius: 1rem;
+  margin: 2rem 0rem;
+  padding: 2rem;
+  box-shadow: 6px 6px 20px rgb(122 122 122 / 21%);
+  width: fit-content;
+}
+
+.boss-btn {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
+
+}
+.btn {
+  cursor: pointer;
+  border-radius: 1rem;
+  position: relative;
+  border: 0px;
+  padding: 7px 16px;
+}
+.start {
+  background: linear-gradient(to right top, #65dfc9, #6c6eeb);
+}
+.quit {
+  background: linear-gradient(to right top, #df658e, #fdceea);
+}
+.error {
+  padding: 2px 9px;
+  border-radius: 80px;
+  font-size: 10px;
+  color: white;
+  background: linear-gradient(to right top, #e7384f, #ffcaea);
+}
+
+.boss-btn button:disabled {
+  cursor: not-allowed;
+  background: rgb(126, 126, 126);
+}
+.card-info {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+
+
+textarea {
+  margin-top:3px;
+  margin-bottom: 4px;
+  width: 77%;
+  height: 300px;
+  -moz-border-bottom-colors: none;
+  -moz-border-left-colors: none;
+  -moz-border-right-colors: none;
+  -moz-border-top-colors: none;
+  background: none repeat scroll 0 0 rgba(0, 0, 0, 0.07);
+  border-color: -moz-use-text-color #FFFFFF #FFFFFF -moz-use-text-color;
+  border-image: none;
+  border-radius: 6px 6px 6px 6px;
+  border-style: none solid solid none;
+  border-width: medium 1px 1px medium;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.12) inset;
+  color: #555555;
+  font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
+  font-size: 1em;
+  line-height: 1.4em;
+  padding: 5px 8px;
+  transition: background-color 0.2s ease 0s;
+}
+
+
+textarea:focus {
+    background: none repeat scroll 0 0 #FFFFFF;
+    outline-width: 0;
+}
+
+.account{
+  display: flex;
+  flex-direction: column;
+}
+
+.account input{
+  padding: 9px;
+  border: 0px;
+  border-radius: 4px;
+  width:47%;
+  font-size: medium;
+  margin: 2px;
+  background: linear-gradient(rgba(109, 245, 255, 0.603), rgba(0, 255, 136, 0.295));
+}
+
+.account input:hover{
+  background: linear-gradient(rgba(235, 226, 255, 0.76), rgba(0, 255, 136, 0.295));
+}
+.account input:disabled{
+  background: linear-gradient(rgba(235, 226, 255, 0.76), rgba(44, 44, 44, 0.295));
+  cursor:not-allowed;
+}

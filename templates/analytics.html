@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}
+Settings -
+{% endblock title %}
+
+
+
+{% block content %}
+  <div class="status">
+    <h1>Analytics</h1>
+    <a class='btn quit' href="{% url 'clear_all_time_plays' %}">Clear</a>
+  </div>
+
+  <div style="margin-top:20px; font-size:20px;">
+    <img src='/static/images/play.png' width='15'> All time plays : {{all_time_plays}}
+  </div>
+  
+  
+{% endblock content %}

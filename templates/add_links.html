@@ -1,0 +1,69 @@
+{% extends 'base.html' %}
+{% block title %}Accounts - {% endblock title %}
+
+{% block content %}
+
+<div class="status">
+  <h1>Automation Dashboard</h1>
+  <a class="btn quit" href="/remove/all">Remove All!</a>
+
+</div>
+<div class="cards">
+  {% comment %} {% for account in accounts %} {% endcomment %}
+  <div class="card">
+    <div class="card-info">
+      <h2>{{ account.email }}
+      </h2>
+      <p>{{ account.ip }}:{{ account.port }}</p>  
+      <span class="boss-btn">
+        <a href='/edit/{{ account.id }}'>
+          <button class="btn start">
+            Edit
+          </button>
+        </a>
+        <a href='/remove/{{ account.id }}'>
+          <button class="btn quit">
+            Remove
+          </button>
+        </a>
+      </span>
+    </div>
+  </div>
+  <div class="card">
+    <div class="card-info">
+      <h2>{{ account.email }}
+      </h2>
+      <p>{{ account.ip }}:{{ account.port }}</p>  
+      <span class="boss-btn">
+        <a href='/edit/{{ account.id }}'>
+          <button class="btn start">
+            Edit
+          </button>
+        </a>
+        <a href='/remove/{{ account.id }}'>
+          <button class="btn quit">
+            Remove
+          </button>
+        </a>
+      </span>
+    </div>
+  </div>
+  {% comment %} {% endfor %} {% endcomment %}
+
+</div>
+{% for msg in messages %}
+{{msg}}
+{% endfor %}
+<div class="cards">
+  <h1 style="font-size: 1rem;">Add accounts in bulk</h1>
+  <form method="POST">
+    {% csrf_token %}
+  <textarea name='accounts' style="display: block;" placeholder="First_Email password ip port
+Second_Email password ip port">{% if raw_accounts %}{{raw_accounts}}{% endif %}</textarea>
+<button class='btn start'>Submit</button>
+<small>Note: Do not use comma!</small>
+</form>
+</div>
+
+
+{% endblock content %}

@@ -1,0 +1,78 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}
+Settings -
+{% endblock title %}
+
+{% block head %}
+<link rel='stylesheet' href='/static/settings.css'>
+{% endblock head %}
+
+{% block content %}
+  <div class="settings">
+    <h1>Change the settings here.</h1>
+    <form method="POST">
+    {% csrf_token %}
+      <label>
+        <input type="checkbox" name="headless" 
+        {% if setting.headless %}
+        checked
+        {% endif %}
+        >
+        <span>Browser-less Bot <img src='/static/images/steam.png' width='15'></span>
+      </label>
+      <label>
+        <input type="checkbox" name="maximized" 
+        {% if setting.maximized %}
+        checked
+        {% endif %}
+        >
+        <span>Maximized Browser size</span>
+      </label>
+      <label>
+        <input type="checkbox" name='use_proxy'
+        {% if setting.use_proxy %}
+        checked
+        {% endif %}
+        >
+        <span>Use proxy server</span>
+      </label>
+      <label>
+        <span>Refresh after every </span>
+        <input type="number" name='refresh_delay' min='2' value={{setting.refresh_delay}}>
+        <span>seconds</span>
+      </label>
+      <label>
+        <span>Minimum play: </span>
+        <input type="number" style="width:60px;" name='min_play' min="25" max="180" value={{setting.min_play}}>
+        <space style="padding: 0px 9px"></space>
+        <span>Maximum play: </span>
+        <input type="number" style="width:60px;" name='max_play' min="30" max="180" value={{setting.max_play}}>
+        
+      </label>
+
+
+      <div class="settings__content">
+        <p>You can customize your bots here. And if you wanna get help with these,
+        you can message me on <a href="https://facebook.com/bishwasbh">Facebook</a></p>
+      </div>
+      
+      <div class="settings__footer">
+        <h1>Add/Remove playlist</h1>
+
+        <input class='input-box'name='playlist' placeholder="Playlist Link" value="{{playlist.link}}">
+  
+        <div class="send">
+          <input type="submit" value="Save">
+        </div>
+      </div>
+    </div>
+
+  
+    
+    </form>
+   
+</div>
+
+{% endblock content %}

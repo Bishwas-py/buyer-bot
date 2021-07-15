@@ -1,0 +1,39 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<div class="status">
+  <h1>Automation Dashboard</h1>
+  <a class='btn quit' href="">Close all</a>
+  
+</div>
+<div class="cards">
+  {% for key, thread in threads.items %}
+  <div class="card">
+    <div class="card-info">
+      <h2>{{ thread.thread.name }}
+        {% if thread.error %}
+        <span class='error'>Error SAP!</span>
+        {% endif %}
+      </h2>
+      <p>{{ thread.account.email }}</p>
+      {% if thread.email %}<p>{{ thread.args.email }}</p>{% endif %}
+      <span class="boss-btn">
+        <a href="">
+          <button class="btn start" {% if thread.enabled %} disabled {% endif %}>
+            Start
+          </button>
+        </a>
+        <a href='/exit_thread/{{ thread.id }}'>
+          <button class="btn quit" {% if not thread.enabled %} disabled {% endif %}>
+            Quit
+          </button>
+        </a>
+      </span>
+    </div>
+  </div>
+  {% endfor %}
+
+</div>
+
+
+{% endblock content %}

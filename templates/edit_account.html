@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<div class="status">
+  <h1>Automation Dashboard</h1>
+</div>
+<div class="cards">
+<form class='account' action="{% url 'edit' index=index %}" method="POST">
+    {% csrf_token %}
+    <div class='form-set'>
+        <input type="hidden" name='id' value="{{account.id}}">
+        <input type="text" placeholder='Email' value="{{account.email}}" disabled>
+        <input type="text" name='password' placeholder="Password" value="{{account.password}}">
+    </div>
+    <div class='form-set'>
+        <input type="text" name='ip' placeholder="Proxy Address" value="{{account.ip}}">:
+        <input type="text" name='port' placeholder="Port No." value="{{account.port}}">
+    </div>
+    <button class="btn start" style="width: 90px;margin-top: 5px;">SUBMIT</button>
+</form>
+</div>
+
+
+
+{% endblock content %}
