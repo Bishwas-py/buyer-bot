@@ -7,18 +7,24 @@ from chromedriver_py import binary_path # this will get you the path variable
 from.additionals import getDriver
 from.bot import Bots
 from..models import Items
-threads = dict()
 
+threads = dict()
 
 def threader():
     items = Items.objects.all()
+    print("Items Collected")
+    
     for i in range(items.count()):
         item = items[i]
+        print(f"Item: {item}")
         driver = getDriver(f"profile_{i}")
+        print(f"Driver started")
         bot = Bots(driver)
-        target = bot.bestbuy(item.link, item.quantity, item.skip)
-        t = threading.Thread(target=target, name=f'Bestbuy Bot {i}')
+        print(f"Boot targeted")
+        t = threading.Thread(target=bot.bestbuy, args=(item.link, item.quantity, item.skip,), name=f'Bestbuy Bot {i}')
+        print(f"Starting bot")
         t.start()
+        print(f"BOT Started")
         threads.update({
             i:
             {

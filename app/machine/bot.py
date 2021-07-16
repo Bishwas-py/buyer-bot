@@ -18,6 +18,10 @@ class Bots:
         driver.get("https://www.bestbuy.com")
         if not skip:
             try:
+                driver.find_element_by_xpath('//div[contains(@class, "country-selection")]//a[contains(@class, "us-link")]//img[1]').click()
+            except:
+                pass
+            try:
                 driver.find_element_by_xpath('//*[@id="survey_invite_no"]').click()
             except:
                 pass
@@ -104,9 +108,3 @@ class Bots:
                     
                     driver.find_element_by_xpath(f"//*[contains(@class, 'fluid-item__quantity')]/option[{quantity}]").click()
                     break
-
-
-driver = getDriver("Ayaz Prasad")
-bot = Bots(driver)
-link = 'https://www.bestbuy.com/site/teach-tech-mech-5-mechanical-coding-robot/6394980.p?skuId=6394980'
-bot.bestbuy(link, 2, skip=False)
