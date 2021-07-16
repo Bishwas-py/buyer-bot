@@ -12,7 +12,7 @@ class Items(models.Model):
         verbose_name="Minimum Price")
     max_price = models.FloatField(null=True, blank=False, 
         verbose_name="Maximum Price", help_text="Remember MAX price must be greater than MIN.")
-        
+    bought = models.BooleanField(default=False)
     class Meta:
         verbose_name = "Item"
         verbose_name_plural = "Items"

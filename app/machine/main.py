@@ -17,11 +17,11 @@ def threader():
     for i in range(items.count()):
         item = items[i]
         print(f"Item: {item}")
-        driver = getDriver(f"profile_{i}")
+        driver = getDriver(f"profile_{item.id}")
         print(f"Driver started")
         bot = Bots(driver)
         print(f"Boot targeted")
-        t = threading.Thread(target=bot.bestbuy, args=(item.link, item.quantity, item.skip,), name=f'Bestbuy Bot {i}')
+        t = threading.Thread(target=bot.bestbuy, args=(item.link, item.quantity, item.skip, i,), name=f'Bestbuy Bot {i}')
         print(f"Starting bot")
         t.start()
         print(f"BOT Started")

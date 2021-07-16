@@ -12,7 +12,7 @@ class Bots:
     def __init__(self, driver:webdriver.Chrome):
         self.driver = driver
 
-    def bestbuy(self, link:str="", quantity=1, skip=False, clear_cart=False):
+    def bestbuy(self, link:str="", quantity=1, skip=False, clear_cart=False, thread_no=0):
         driver = self.driver
         getElement = waitGetElm(driver)
         driver.get("https://www.bestbuy.com")
