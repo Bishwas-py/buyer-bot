@@ -30,7 +30,6 @@ class Items(models.Model):
 class Settings(models.Model):
     headless = models.BooleanField(default=True)
     maximized = models.BooleanField(default=True)
-    use_proxy = models.BooleanField(default=True)
     refresh_delay = models.IntegerField(default=600)
 
     class Meta:

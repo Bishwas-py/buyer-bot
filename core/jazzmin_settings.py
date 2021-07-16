@@ -12,15 +12,9 @@ JAZZMIN_SETTINGS: Dict[str, Any] = {
     "custom_links": {
         "app": [
             {
-                "name": "Make Messages", 
-                "url": "settings", 
-                "icon": "fas fa-comments",
-                "permissions": ["app.custom_links"]
-            },
-            {
-                "name": "Support", 
-                "url": "settings", 
-                "icon": "fas fa-comments",
+                "name": "Crawler Center", 
+                "url": "home", 
+                "icon": "fas fa-spider",
                 "permissions": ["app.custom_links"]
             },
         ]

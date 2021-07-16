@@ -1,10 +1,12 @@
 from django.shortcuts import render
+from.models import Items
 
 def home(request):
-    return render(request, "index.html")
+    return render(request, "bots/index.html")
 
-def settings(request):
-    return render(request, "settings.html")
-
-def add_links(request):
-    return render(request, "add_links.html")
+# def settings(request):
+#     items = Items.objects.all()
+#     context = {
+#         "items":items,
+#     }
+#     return render(request, "bots/index.html",context)

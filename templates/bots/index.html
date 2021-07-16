@@ -1,0 +1,39 @@
+{% extends 'bots/base.html' %}
+{% block content %}
+{% for item in items %}
+<div class="card card-widget">
+              <!-- Add the bg color to the header using any of the bg-* classes -->
+
+    <!-- /.widget-user-image -->
+    <div class="p-3">
+    <h3 class="h5">{{item.link|truncatechars:25}}</h3>
+    <h5 class="h6">Bootname: {}</h5>
+    </div>
+    <div class="card-footer p-0">
+    <ul class="nav flex-column">
+        <li class="nav-item">
+        <a href="#" class="nav-link">
+            Skip Process<span class="float-right badge bg-primary">{{item.skip}}</span>
+        </a>
+        </li>
+        <li class="nav-item">
+        <a href="#" class="nav-link">
+            Min Price <span class="float-right badge bg-info">{{item.min_price}}</span>
+        </a>
+        </li>
+        <li class="nav-item">
+        <a href="#" class="nav-link">
+            Maximun Price <span class="float-right badge bg-success">{{item.max_price}}</span>
+        </a>
+        </li>
+        <li class="nav-item">
+        <a href="#" class="nav-link">
+            Quantity <span class="float-right badge bg-danger">{{item.quantity}}</span>
+        </a>
+        </li>
+    </ul>
+    </div>
+</div>
+
+{% endfor %}
+{% endblock %}
