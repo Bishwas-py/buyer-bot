@@ -8,12 +8,14 @@ from.models import *
 
 class ItemsAdmin(admin.ModelAdmin):
     list_display = ['link', 'quantity', 'min_price', 'max_price']
-    
+    readonly_fields = ['bought']
+
 class SettingsAdmin(admin.ModelAdmin):
     def changelist_view(self, request, extra_context=None):
         if Settings.objects.all().count() == 1:
             obj = self.model.objects.all()[0]
-            return redirect(reverse("admin:%s_%s_change" %(self.model._meta.app_label, self.model._meta.model_name), args=(obj.id,)))
+            return redirect(reverse(f"admin:{self.model._meta.app_label}_{self.model._meta.model_name}_change", args=(obj.id,)))
 
 admin.site.register(Items, ItemsAdmin)
 admin.site.register(Settings, SettingsAdmin)
+admin.site.register(Accounts)

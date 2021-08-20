@@ -12,59 +12,57 @@ threads = dict()
 
 def threader():
     items = Items.objects.all()
-    print("Items Collected")
     
     for i in range(items.count()):
         item = items[i]
-        print(f"Item: {item}")
-        driver = getDriver(f"profile_{item.id}")
-        print(f"Driver started")
+        driver = getDriver(item.profile)
         bot = Bots(driver)
-        print(f"Boot targeted")
-        t = threading.Thread(target=bot.bestbuy, args=(item.link, item.quantity, item.skip, i,), name=f'Bestbuy Bot {i}')
-        print(f"Starting bot")
+        t = threading.Thread(target=bot.bestbuy, args=(item, i,), name=f'Bestbuy Bot {i}')
         t.start()
-        print(f"BOT Started")
         threads.update({
             i:
             {
-                'id': i,
                 'driver' : driver,
                 "item": item,
-                'thread': t,
                 'enabled': 1,
                 'error': None
             }
         })
 
 
-# def start_bot(index):
-#     options = get_options()
-#     index = int(index)
-#     thread = threads[index]
-#     driver = get_driver(options, thread['account'])
-    
-#     target = Automate(account=thread['account'], driver=driver)
-#     t = threading.Thread(target=target.start, name=f'Deezer Bot {thread["id"]}')
-
-#     threads[index].update(
-#         {'thread':t, 'driver':driver}
-#     )
-    
-#     t.start()
-#     threads[index].update({
-#                 'enabled': 1,
-#                 'error': None
-#     })
+def run_isolated_bot(index:int):
+    thread = threads[index]
+    item = thread['item']
+    driver = getDriver(f"profile/{item.profile}")
+    bot = Bots(driver)
+    thread = threads[index]
+    t = threading.Thread(target=bot.bestbuy, args=(item, index,), name=f'Bestbuy Bot {index}')
+    t.start()
+    thread.update({
+        'driver': driver,
+        'enabled': 1,
+        'error': None
+    })
 
 
-def quit_bot(index, witherror = False):
+def quit_bot(index:int, witherror = False):
     thread = threads[int(index)]
     driver = thread['driver']
     driver.quit()
     thread.update(
         {'enabled':0, "error":witherror}
-    )      
+    )
 
+
+def quit_all_bot():
+    for index in list(threads):
+        thread = threads[index]
+        driver = thread['driver']
+        driver.quit()
+        thread.update(
+            {'enabled':0, "error":False}
+        )
+    
+    
 def get_threads():
     return threads

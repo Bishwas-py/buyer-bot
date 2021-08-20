@@ -13,7 +13,7 @@ JAZZMIN_SETTINGS: Dict[str, Any] = {
         "app": [
             {
                 "name": "Crawler Center", 
-                "url": "home", 
+                "url": "dashboard", 
                 "icon": "fas fa-spider",
                 "permissions": ["app.custom_links"]
             },

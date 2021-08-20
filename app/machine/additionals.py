@@ -6,7 +6,6 @@ from selenium.webdriver.common.action_chains import ActionChains
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.common.by import By
 from selenium import webdriver
-from decouple import config
 from chromedriver_py import binary_path
 
 def get_price(price) -> float:
@@ -14,10 +13,6 @@ def get_price(price) -> float:
     return price
 
 def typeKeys(input, key:str) -> None:
-    try:
-        key = config(key)
-    except:
-        pass
     for letter in key:
         wait(choice([0.01, 0.09, 0.03, 0.08]))
         input.send_keys(letter)

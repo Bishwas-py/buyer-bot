@@ -213,15 +213,9 @@
                                 </a>
                             </li>
                             {% endif %}
-
-                            <li class="nav-item">
-                                <a href="{% url 'start_bot' %}" class="nav-link">
-                                    {% comment %} {% url 'start_bots' %} {% endcomment %}
-                                    <i class="nav-icon fas fa-sync-alt"></i>
-                                    <p>Start Bots</p>
-                                </a>
-                            </li>
-
+                            
+                            {% include 'widgets/navs.html' %}
+                            
                             {% if jazzmin_settings.navigation_expanded %}
                                 {% for app in side_menu_list %}
                                     <li class="nav-header">{{ app.name }}</li>

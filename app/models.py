@@ -7,12 +7,16 @@ from django.core.exceptions import ValidationError
 class Items(models.Model):
     link = models.URLField(max_length=1299, null=True, blank=False)
     quantity = models.IntegerField(default=1, null=True, blank=False)
-    skip = models.BooleanField(default=False, null=True, blank=False)
+    profile = models.CharField(default="Profile_KK1", null=True, blank=False, max_length=255)
     min_price = models.FloatField(default=0, null=True, blank=False,
         verbose_name="Minimum Price")
     max_price = models.FloatField(null=True, blank=False, 
         verbose_name="Maximum Price", help_text="Remember MAX price must be greater than MIN.")
+    account = models.ForeignKey('Accounts', on_delete=models.SET_NULL, null=True)
+    skip = models.BooleanField(default=False, null=True, blank=False)
     bought = models.BooleanField(default=False)
+    need_verification = models.BooleanField(default=False)
+
     class Meta:
         verbose_name = "Item"
         verbose_name_plural = "Items"
@@ -48,4 +52,12 @@ class Playlists(models.Model):
 
     def __str__(self):
         return str(self.link)
+    
+
+class Accounts(models.Model):
+    email = models.CharField(null=False, blank=False, max_length=255)
+    password = models.CharField(null=False, blank=False, max_length=255)
+    
+    def __str__(self):
+        return str(self.email)
     
