@@ -55,6 +55,8 @@ def getDriver(profile:str) -> webdriver.Chrome:
     options.add_argument('--disable-blink-features=AutomationControlled') # For ChromeDriver version 79.0.3945.16 or over
     options.add_experimental_option("excludeSwitches", ["enable-automation"]) # For older ChromeDriver under version 79.0.3945.16
     options.add_experimental_option('useAutomationExtension', False)
+    options.add_argument("--remote-debugging-port=9222")  # this
+
 
     options.add_argument(f'--user-data-dir=profile/{profile}')
     driver = webdriver.Chrome(executable_path=binary_path, options=options)
