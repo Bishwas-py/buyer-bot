@@ -1,7 +1,6 @@
 import os
 import time
 import threading
-os.chdir("web")
 
 args_lst = [
     "python manage.py runserver 8081",
