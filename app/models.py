@@ -15,6 +15,7 @@ class Items(models.Model):
     skip = models.BooleanField(default=False, null=True, blank=False)
     bought = models.BooleanField(default=False)
     need_verification = models.BooleanField(default=False)
+    is_test = models.BooleanField(default=False)
 
     class Meta:
         verbose_name = "Item"

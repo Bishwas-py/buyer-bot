@@ -77,7 +77,7 @@ class Bots:
                     # confirm verification
                     continueVerification = item.need_verification
                     while continueVerification:
-                        print('CHECKING...')
+                        print('Doing Verification...')
                         try:
                             verificationCodeinput = driver.find_element_by_xpath('//*[@id="verificationCode"]')
                             typeKeys(verificationCodeinput, get_verification_code(FindWith.BESTBUY))
@@ -99,24 +99,34 @@ class Bots:
                 except Exception as inst:
                     d = inst
                     print(d)
-            else:
-                refresh_delay = Settings.objects.first().refresh_delay
-                while True:
-                    driver.get(item.link)
-                    price = driver.find_element_by_xpath("//*[contains(@class, 'priceView-customer-price')]/span")
-                    price = get_price(price)
+        
+            refresh_delay = Settings.objects.first().refresh_delay
+            while True:
+                driver.get(item.link)
+                price = driver.find_element_by_xpath("//*[contains(@class, 'priceView-customer-price')]/span")
+                price = get_price(price)
+                
+                # get price
+                if item.min_price < price < item.max_price+1:
+                    # Click on "Add to cart"
+                    getElement.now(By.CLASS_NAME, 'add-to-cart-button').click()
+                    # Click on go to cart
+                    driver.find_element_by_xpath("//*[contains(@class, 'go-to-cart-button')]/a").click()
+                    # select quantity
                     
-                    # get price
-                    if item.min_price < price < item.max_price+1:
-                        # Click on "Add to cart"
-                        getElement.now(By.CLASS_NAME, 'add-to-cart-button').click()
-                        # Click on go to cart
-                        driver.find_element_by_xpath("//*[contains(@class, 'go-to-cart-button')]/a").click()
-                        # select quantity
-                        
+                    try:
                         driver.find_element_by_xpath(f"//*[contains(@class, 'fluid-item__quantity')]/option[{item.quantity}]").click()
-                        break
-                    wait(refresh_delay)
+                    except Exception as inst:
+                        d = inst
+                        print(d)
+                        print("Quantity in dropdown not selected.")
+                    
+                    # finally buy the product
+                    if not item.is_test:
+                        driver.find_element_by_xpath('//*[@id="cartApp"]//*[contains(@class, "checkout-buttons__checkout")]').click()
+                    
+                    break
+                wait(refresh_delay)
                     
                 from.main import quit_bot
                 quit_bot(thread_no)
