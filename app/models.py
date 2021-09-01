@@ -2,7 +2,6 @@ from django.db import models
 from django.dispatch import receiver
 from django.core.exceptions import ValidationError
 
-
 # Create your models here.
 class Items(models.Model):
     link = models.URLField(max_length=1299, null=True, blank=False)
@@ -29,7 +28,12 @@ class Items(models.Model):
 
     def __str__(self) -> str:
         return self.link
-
+    
+    def save(self, *args, **kwargs):
+        from .machine.main import threads
+        if threads:
+            threads[self.id]['item'] = self
+        super(Items, self).save(*args, **kwargs)
 
 class Settings(models.Model):
     headless = models.BooleanField(default=True)
@@ -60,4 +64,8 @@ class Accounts(models.Model):
     
     def __str__(self):
         return str(self.email)
+    
+    class Meta:
+        verbose_name = "Account"
+    
     

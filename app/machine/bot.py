@@ -8,7 +8,7 @@ from.read_inbox import get_verification_code, FindWith
 from.additionals import *
 from selenium.common.exceptions import TimeoutException
 
-from..models import Settings
+from ..models import Settings
 
 class Bots:
     def __init__(self, driver:webdriver.Chrome):

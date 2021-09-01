@@ -13,14 +13,13 @@ threads = dict()
 def threader():
     items = Items.objects.all()
     
-    for i in range(items.count()):
-        item = items[i]
+    for item in items:
         driver = getDriver(item.profile)
         bot = Bots(driver)
-        t = threading.Thread(target=bot.bestbuy, args=(item, i,), name=f'Bestbuy Bot {i}')
+        t = threading.Thread(target=bot.bestbuy, args=(item, item.id,), name=f'Bestbuy Bot {item.id}')
         t.start()
         threads.update({
-            i:
+            item.id:
             {
                 'driver' : driver,
                 "item": item,
