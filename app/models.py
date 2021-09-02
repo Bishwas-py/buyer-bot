@@ -1,20 +1,20 @@
+from django import forms
 from django.db import models
-from django.dispatch import receiver
 from django.core.exceptions import ValidationError
 
 # Create your models here.
 class Items(models.Model):
     link = models.URLField(max_length=1299, null=True, blank=False)
     quantity = models.IntegerField(default=1, null=True, blank=False)
-    profile = models.CharField(default="Profile_KK1", null=True, blank=False, max_length=255)
     min_price = models.FloatField(default=0, null=True, blank=False,
         verbose_name="Minimum Price")
     max_price = models.FloatField(null=True, blank=False, 
         verbose_name="Maximum Price", help_text="Remember MAX price must be greater than MIN.")
-    account = models.ForeignKey('Accounts', on_delete=models.SET_NULL, null=True)
+    security_code = models.CharField(null=True, blank=False, max_length=500)
+    account = models.OneToOneField('Accounts', on_delete=models.SET_NULL, null=True)
     skip = models.BooleanField(default=False, null=True, blank=False)
     bought = models.BooleanField(default=False)
-    is_test = models.BooleanField(default=False)
+    is_test = models.BooleanField(default=False, help_text="Enable test only for testing purpose.")
 
     class Meta:
         verbose_name = "Item"

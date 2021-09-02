@@ -1,14 +1,24 @@
+from django import forms
 from django.urls import reverse
 from django.contrib import admin
-from django.template.response import TemplateResponse
 
-from django.shortcuts import redirect, render
+from django.shortcuts import redirect
 
 from.models import *
+
+class ItemsForm(forms.ModelForm):
+    class Meta:
+        model = Items
+        widgets = {
+            'security_code': forms.PasswordInput(),
+        }
+        fields = ['security_code',]
 
 class ItemsAdmin(admin.ModelAdmin):
     list_display = ['link', 'quantity', 'min_price', 'max_price']
     readonly_fields = ['bought']
+    class Meta:
+        form = ItemsForm
 
 class SettingsAdmin(admin.ModelAdmin):
     def changelist_view(self, request, extra_context=None):
