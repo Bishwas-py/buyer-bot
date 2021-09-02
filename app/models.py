@@ -14,7 +14,6 @@ class Items(models.Model):
     account = models.ForeignKey('Accounts', on_delete=models.SET_NULL, null=True)
     skip = models.BooleanField(default=False, null=True, blank=False)
     bought = models.BooleanField(default=False)
-    need_verification = models.BooleanField(default=False)
     is_test = models.BooleanField(default=False)
 
     class Meta:
