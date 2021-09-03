@@ -64,10 +64,13 @@ class Bots:
                     passwordInput = driver.find_element_by_xpath('//*[@id="fld-p1"]')
                     typeKeys(emailInput, item.account.email)
                     typeKeys(passwordInput, item.account.password)
-                    click_btn_str = '/html/body/div[1]/div/section/main/div[2]/div[1]/div/div/div/div/form/div[3]/button'
+                    click_btn_str = '//button[contains(@class, "cia-form__controls__submit")][contains(text(), "Sign In")]'
                     
+                    print('Clicking signin button...')
                     self.bestbuy_click(driver.find_element_by_xpath(click_btn_str))
+                    print('Signin button clicked...')
                     self.bestbuy_select_country()
+                    print('Best buy select country!')
                     
                 except Exception as inst:
                     d = inst
