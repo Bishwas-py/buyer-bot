@@ -1,5 +1,4 @@
 from selenium import webdriver
-from selenium.webdriver.common.keys import Keys
 from time import sleep as wait
 from selenium.webdriver.common.by import By
 from.additionals import *
@@ -44,13 +43,11 @@ class Bots:
         # First, go to your start point or Element:
         action.move_to_element(startElement)
         action.perform()
-        
-        print(f"(LEN: {len(x_i)}, {len(y_i)}")
+
         for mouse_x, mouse_y in zip(x_i, y_i):
-            print(f"Moving cursory: {mouse_x}, {mouse_y}")
             action.move_by_offset(mouse_x, mouse_y)
             action.perform()
-
+    
     def bestbuy(self, item, thread_no=0):
         try:
             print('working!')

@@ -1,6 +1,6 @@
 import imaplib
 import email
-from decouple import config
+from variables import BESTBUY
 from bs4 import BeautifulSoup
 from time import sleep as wait
 
@@ -13,8 +13,8 @@ class FindWith(object):
 
 def get_verification_code(find_with:str):
     host = 'imap.gmail.com'
-    username = config("G_EMAIL")
-    password = config("G_PASSWORD")
+    username = BESTBUY.G_EMAIL
+    password = BESTBUY.G_PASSWORD
     mail = imaplib.IMAP4_SSL(host)
     mail.login(username, password)
     mail.select("inbox")

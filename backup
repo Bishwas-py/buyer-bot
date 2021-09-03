@@ -1,0 +1,21 @@
+
+def bestbuy_verification(self, item):
+    # confirm verification
+    driver = self.driver
+    continueVerification = item.need_verification
+    while continueVerification:
+        print('Doing Verification...')
+        try:
+            verificationCodeinput = driver.find_element_by_xpath('//*[@id="verificationCode"]')
+            typeKeys(verificationCodeinput, get_verification_code(FindWith.BESTBUY))
+            errorMsg = driver.find_element_by_xpath('/html/body/div[1]/div/section/main/div[2]/div[1]/div/div/div[1]/div')
+            driver.find_element_by_xpath('/html/body/div[1]/div/section/main/div[2]/div[1]/div/div/div/div/form/div[2]/button').click()
+            wait(5)
+        except:
+            continueVerification = False
+            verificationCodeinput.sendKeys(Keys.DELETE)
+    if continueVerification:
+        newPasswordInput = driver.find_element_by_xpath('//*[@id="fld-p1"]')
+        confNewPasswordInput = driver.find_element_by_xpath('//*[@id="reenterPassword"]')
+        typeKeys(newPasswordInput, config("BESTBUY_NEWPASSWORD"))
+        typeKeys(confNewPasswordInput, config("BESTBUY_NEWPASSWORD"))
