@@ -1,3 +1,4 @@
+from app.machine.read_inbox import FindWith, get_verification_code
 from selenium import webdriver
 from time import sleep as wait
 from selenium.webdriver.common.by import By
@@ -59,13 +60,62 @@ class Bots:
                 try:
                     emailInput = driver.find_element_by_xpath('//*[@id="fld-e"]')
                     passwordInput = driver.find_element_by_xpath('//*[@id="fld-p1"]')
+                    
                     typeKeys(emailInput, item.account.email)
                     typeKeys(passwordInput, item.account.password)
                     click_btn_str = '//button[contains(@class, "cia-form__controls__submit")][contains(text(), "Sign In")]'
-                    
                     print('Clicking signin button...')
                     self.bestbuy_click(driver.find_element_by_xpath(click_btn_str))
                     print('Signin button clicked...')
+                    try:
+                        driver.implicitly_wait(25)
+                        is_alert = driver.find_element_by_class_name('cia-alert')
+                        driver.implicitly_wait(15)
+                        print('Till here...')
+                        print('CLicking in Forget Password')
+                        driver.find_element_by_xpath("//span[contains(@class, 'cia-signin__forgot')]//a").click()
+                        print('Clicking in Email Submit')
+                        driver.find_element_by_xpath("//button[contains(@class, 'cia-form__controls__submit')]").click()
+                    except Exception as inst:
+                        d = inst
+                        print(d)
+                        
+                    try:
+                        print('Clicking in Email Verification')
+                        driver.find_element_by_xpath("//label[contains(@for, 'email-radio')]//i[contains(@class, 'c-radio-custom-input')]").click()
+                        driver.find_element_by_xpath("//div[contains(@class, 'cia-form__controls')]//button[contains(@class, 'cia-form__controls__submit')]").click()
+                        
+                        print('Entering Verification Code')
+                        verification_code = driver.find_element_by_xpath("//div[contains(@class, 'tb-input-wrapper-full-width')]//input[contains(@class, 'tb-input')]")
+                        wait(12)
+                        print('Typing Verification Code')
+
+                        continue_verification = True
+                        while continue_verification:
+                            try:
+                                typeKeys(verification_code, get_verification_code(item, FindWith.BESTBUY))
+                                continue_verification = False
+                            except:
+                                driver.find_element_by_xpath("//div[contains(@class, 'cia-prompt-actions__actions')]//button[contains(@data-track, 'Verification Code - Resend')]").click()
+                                wait(5)
+
+                        print('Clicking SUBMIT verification code')
+                        driver.find_element_by_xpath("//div[contains(@class, 'cia-form__controls')]//button[contains(@class, 'cia-form__controls__submit')]").click()
+                        
+                        print('Adding New Password and Confirm New Password')
+                        new_password = driver.find_element_by_xpath("//div[contains(@class, 'tb-input-wrapper-full-width')]//input[contains(@id, 'fld-p1')]")
+                        typeKeys(new_password, item.account.password)
+                        confirm_new_password = driver.find_element_by_xpath("//div[contains(@class, 'tb-input-wrapper-full-width')]//input[contains(@id, 'reenterPassword')]")
+                        typeKeys(confirm_new_password, item.account.password)
+                        
+                        print('Clicking Save & Continue')
+                        driver.find_element_by_xpath("//div[contains(@class, 'cia-form__controls')]//button[contains(@class, 'cia-form__controls__submit')]").click()
+                    
+                    except Exception as inst:
+                        d = inst
+                        print(d)
+                        from.main import quit_bot
+                        quit_bot(thread_no)
                     self.bestbuy_select_country()
                     print('Best buy select country!')
                     

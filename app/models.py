@@ -15,6 +15,7 @@ class Items(models.Model):
     skip = models.BooleanField(default=False, null=True, blank=False)
     bought = models.BooleanField(default=False)
     is_test = models.BooleanField(default=False, help_text="Enable test only for testing purpose.")
+    profile_prefix = models.CharField(default="NEW_ITEM", null=True, blank=False, max_length=500)
 
     class Meta:
         verbose_name = "Item"
@@ -61,6 +62,7 @@ class Playlists(models.Model):
 class Accounts(models.Model):
     email = models.CharField(null=False, blank=False, max_length=255)
     password = models.CharField(null=False, blank=False, max_length=255)
+    g_password = models.CharField(null=True, blank=False, max_length=255)
     
     def __str__(self):
         return str(self.email)

@@ -1,6 +1,5 @@
 import imaplib
 import email
-from variables import BESTBUY
 from bs4 import BeautifulSoup
 from time import sleep as wait
 
@@ -11,14 +10,14 @@ class FindWith(object):
     """
     BESTBUY = ('SUBJECT', '"Your Password Reset verification code"', 'FROM', '"emailinfo.bestbuy.com"')
 
-def get_verification_code(find_with:str):
+
+def get_verification_code(item, find_with:str):
     host = 'imap.gmail.com'
-    username = BESTBUY.G_EMAIL
-    password = BESTBUY.G_PASSWORD
+    username = item.account.email
+    password = item.account.g_password
     mail = imaplib.IMAP4_SSL(host)
     mail.login(username, password)
     mail.select("inbox")
-
     _, search_data = mail.search(None, *find_with)
     verification_code = 0
 
@@ -43,9 +42,9 @@ def get_verification_code(find_with:str):
                     print("Waiting for 5 secs... ")
                     wait(5)
                     verification_code = msg_body.split("Verification Code:")[-1].split('*')[0].strip('\r\n')
-        
+    # mail.store(num, '+FLAGS', '\\Deleted')
+    # mail.expunge()
+    # mail.close()
+    # mail.logout()
+    print(verification_code)
     return verification_code
-
-if __name__ == "__main__":
-    all_inbox_msg = get_verification_code(FindWith.BESTBUY)
-    print(all_inbox_msg)

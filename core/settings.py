@@ -31,7 +31,6 @@ ALLOWED_HOSTS = ['154.27.80.244', '127.0.0.1', '0.0.0.0']
 # Application definition
 
 INSTALLED_APPS = [
-    "app",
     "jazzmin",
     'django.contrib.admin',
     'django.contrib.auth',
@@ -42,6 +41,8 @@ INSTALLED_APPS = [
     
     "django_simple_tags",
     "django_cards_admin",
+    
+    "app",
 ]
 
 MIDDLEWARE = [
