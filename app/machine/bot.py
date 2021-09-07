@@ -38,20 +38,7 @@ class Bots:
             d = inst
             print(frameinfo.filename, frameinfo.lineno)
             print(d)
-            
-    def bestbuy_act_like_human(self, element:webdriver.Chrome.find_element=''):
-        print('Acting like Human!')
-        action = self.action
-        if not element:
-            startElement = self.driver.find_element_by_tag_name('body')
-        # First, go to your start point or Element:
-        action.move_to_element(startElement)
-        action.perform()
 
-        for mouse_x, mouse_y in zip(x_i, y_i):
-            action.move_by_offset(mouse_x, mouse_y)
-            action.perform()
-    
     def bestbuy(self, item, thread_no=0):
         try:
             print('working!')
@@ -190,7 +177,6 @@ class Bots:
                     
                     if shouldAddToCart:
                         print('Adding to cart')
-                        self.bestbuy_act_like_human()
                         cards = driver.find_elements_by_xpath("//section[contains(@class, 'card')]")
                         del cards[-1]
                         for card in cards:
