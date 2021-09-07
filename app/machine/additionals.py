@@ -48,7 +48,7 @@ class waitGetElm:
         return waitTill.until(elementEC)
     
 
-def getDriver(profile:str) -> webdriver.Chrome:
+def getDriver(profile:str, headless=False) -> webdriver.Chrome:
     options = webdriver.ChromeOptions()
     options.add_argument('--start-maximized')
     options.add_argument('--no-sandbox') # Bypass OS security model
@@ -57,6 +57,8 @@ def getDriver(profile:str) -> webdriver.Chrome:
     options.add_experimental_option('useAutomationExtension', False)
     options.add_argument("--remote-debugging-port=9222")  # this
 
+    if headless:
+        options.add_argument('--headless')
 
     options.add_argument(f'--user-data-dir=profile/{profile}')
     driver = webdriver.Chrome(executable_path=binary_path, options=options)

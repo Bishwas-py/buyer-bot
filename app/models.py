@@ -14,9 +14,10 @@ class Items(models.Model):
     account = models.OneToOneField('Accounts', on_delete=models.SET_NULL, null=True)
     skip = models.BooleanField(default=False, null=True, blank=False)
     bought = models.BooleanField(default=False)
+    headless = models.BooleanField(default=False, help_text='Turn on Headless Mode if you want to run bot without browser')
     is_test = models.BooleanField(default=False, help_text="Enable test only for testing purpose.")
-    profile_prefix = models.CharField(default="NEW_ITEM", null=True, blank=False, max_length=500)
-
+    profile_prefix = models.CharField(default="NEW_ITEM", null=True, blank=False, max_length=500,
+        help_text='Profile Prefix is used for cache storing (Saving account).')
     class Meta:
         verbose_name = "Item"
         verbose_name_plural = "Items"
