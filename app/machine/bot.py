@@ -93,55 +93,54 @@ class Bots:
                             print(frameinfo.filename, frameinfo.lineno)
                             print(d)
                             
-                    try:
-                        print('Clicking in Email Verification')
-                        driver.find_element_by_xpath("//label[contains(@for, 'email-radio')]//i[contains(@class, 'c-radio-custom-input')]").click()
-                        driver.find_element_by_xpath("//div[contains(@class, 'cia-form__controls')]//button[contains(@class, 'cia-form__controls__submit')]").click()
-                        
-                        print('Entering Verification Code')
-                        verification_code = driver.find_element_by_xpath("//div[contains(@class, 'tb-input-wrapper-full-width')]//input[contains(@class, 'tb-input')]")
-                        wait(12)
-                        print('Typing Verification Code')
+                        try:
+                            print('Clicking in Email Verification')
+                            driver.find_element_by_xpath("//label[contains(@for, 'email-radio')]//i[contains(@class, 'c-radio-custom-input')]").click()
+                            driver.find_element_by_xpath("//div[contains(@class, 'cia-form__controls')]//button[contains(@class, 'cia-form__controls__submit')]").click()
+                            
+                            print('Entering Verification Code')
+                            verification_code = driver.find_element_by_xpath("//div[contains(@class, 'tb-input-wrapper-full-width')]//input[contains(@class, 'tb-input')]")
+                            wait(12)
+                            print('Typing Verification Code')
 
-                        continue_verification = True
-                        while continue_verification:
-                            try:
-                                typeKeys(verification_code, get_verification_code(item, FindWith.BESTBUY))
-                                continue_verification = False
-                            except:
-                                driver.find_element_by_xpath("//div[contains(@class, 'cia-prompt-actions__actions')]//button[contains(@data-track, 'Verification Code - Resend')]").click()
-                                wait(5)
+                            continue_verification = True
+                            while continue_verification:
+                                try:
+                                    typeKeys(verification_code, get_verification_code(item, FindWith.BESTBUY))
+                                    continue_verification = False
+                                except:
+                                    driver.find_element_by_xpath("//div[contains(@class, 'cia-prompt-actions__actions')]//button[contains(@data-track, 'Verification Code - Resend')]").click()
+                                    wait(5)
 
-                        print('Clicking SUBMIT verification code')
-                        driver.find_element_by_xpath("//div[contains(@class, 'cia-form__controls')]//button[contains(@class, 'cia-form__controls__submit')]").click()
+                            print('Clicking SUBMIT verification code')
+                            driver.find_element_by_xpath("//div[contains(@class, 'cia-form__controls')]//button[contains(@class, 'cia-form__controls__submit')]").click()
+                            
+                            print('Adding New Password and Confirm New Password')
+                            new_password = driver.find_element_by_xpath("//div[contains(@class, 'tb-input-wrapper-full-width')]//input[contains(@id, 'fld-p1')]")
+                            typeKeys(new_password, item.account.password)
+                            confirm_new_password = driver.find_element_by_xpath("//div[contains(@class, 'tb-input-wrapper-full-width')]//input[contains(@id, 'reenterPassword')]")
+                            typeKeys(confirm_new_password, item.account.password)
+                            
+                            print('Clicking Save & Continue')
+                            driver.find_element_by_xpath("//div[contains(@class, 'cia-form__controls')]//button[contains(@class, 'cia-form__controls__submit')]").click()
                         
-                        print('Adding New Password and Confirm New Password')
-                        new_password = driver.find_element_by_xpath("//div[contains(@class, 'tb-input-wrapper-full-width')]//input[contains(@id, 'fld-p1')]")
-                        typeKeys(new_password, item.account.password)
-                        confirm_new_password = driver.find_element_by_xpath("//div[contains(@class, 'tb-input-wrapper-full-width')]//input[contains(@id, 'reenterPassword')]")
-                        typeKeys(confirm_new_password, item.account.password)
-                        
-                        print('Clicking Save & Continue')
-                        driver.find_element_by_xpath("//div[contains(@class, 'cia-form__controls')]//button[contains(@class, 'cia-form__controls__submit')]").click()
-                    
-                    except Exception as inst:
-                        d = inst
-                        print(frameinfo.filename, frameinfo.lineno)
-
-                        print(d)
-                        from.main import quit_bot
-                        quit_bot(thread_no)
+                        except Exception as inst:
+                            d = inst
+                            print(frameinfo.filename, frameinfo.lineno)
+                            print(d)
+                            from.main import quit_bot
+                            quit_bot(thread_no)
+                            
                     self.bestbuy_select_country()
-                    print('Best buy select country!')
                     
                 except Exception as inst:
                     d = inst
                     print(frameinfo.filename, frameinfo.lineno)
                     print(d)
-                    
-        
+
             refresh_delay = Settings.objects.first().refresh_delay
             while True:
+                print(item.link)
                 driver.get(item.link)
                 self.bestbuy_select_country()
                 price = driver.find_element_by_xpath("//*[contains(@class, 'priceView-customer-price')]/span")
