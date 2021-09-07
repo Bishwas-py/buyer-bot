@@ -72,7 +72,6 @@ class Bots:
                         self.bestbuy_click(driver.find_element_by_xpath(click_btn_str))
                         print('Signin button clicked...')
                     except Exception as inst:
-                        print(frameinfo.filename, frameinfo.lineno)
                         d = inst
                         print(frameinfo.filename, frameinfo.lineno)
                         print(d)
@@ -132,12 +131,11 @@ class Bots:
                             quit_bot(thread_no)
                             
                     self.bestbuy_select_country()
-                    
                 except Exception as inst:
                     d = inst
                     print(frameinfo.filename, frameinfo.lineno)
                     print(d)
-
+            
             refresh_delay = Settings.objects.first().refresh_delay
             while True:
                 print(item.link)
