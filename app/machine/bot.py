@@ -4,6 +4,8 @@ from time import sleep as wait
 from selenium.webdriver.common.by import By
 from.additionals import *
 from .cursor_data import x_i, y_i
+from inspect import currentframe, getframeinfo
+frameinfo = getframeinfo(currentframe())
 
 from ..models import Settings
 
@@ -34,6 +36,7 @@ class Bots:
             element.click()
         except Exception as inst:
             d = inst
+            print(frameinfo.filename, frameinfo.lineno)
             print(d)
             
     def bestbuy_act_like_human(self, element:webdriver.Chrome.find_element=''):
@@ -53,20 +56,27 @@ class Bots:
         try:
             print('working!')
             driver = self.driver
-            getElement = self.getElement
             driver.get("https://www.bestbuy.com/identity/global/signin")
             self.bestbuy_select_country()
             if not item.skip:
                 try:
-                    emailInput = driver.find_element_by_xpath('//*[@id="fld-e"]')
-                    passwordInput = driver.find_element_by_xpath('//*[@id="fld-p1"]')
-                    
-                    typeKeys(emailInput, item.account.email)
-                    typeKeys(passwordInput, item.account.password)
-                    click_btn_str = '//button[contains(@class, "cia-form__controls__submit")][contains(text(), "Sign In")]'
-                    print('Clicking signin button...')
-                    self.bestbuy_click(driver.find_element_by_xpath(click_btn_str))
-                    print('Signin button clicked...')
+                    try:
+                        emailInput = driver.find_element_by_xpath('//*[@id="fld-e"]')
+                        passwordInput = driver.find_element_by_xpath('//*[@id="fld-p1"]')
+                        
+                        typeKeys(emailInput, item.account.email)
+                        typeKeys(passwordInput, item.account.password)
+                        click_btn_str = '//button[contains(@class, "cia-form__controls__submit")][contains(text(), "Sign In")]'
+                        print('Clicking signin button...')
+                        self.bestbuy_click(driver.find_element_by_xpath(click_btn_str))
+                        print('Signin button clicked...')
+                    except Exception as inst:
+                        print(frameinfo.filename, frameinfo.lineno)
+                        d = inst
+                        print(frameinfo.filename, frameinfo.lineno)
+
+                        print(d)
+
                     try:
                         driver.implicitly_wait(25)
                         is_alert = driver.find_element_by_class_name('cia-alert')
@@ -78,6 +88,8 @@ class Bots:
                         driver.find_element_by_xpath("//button[contains(@class, 'cia-form__controls__submit')]").click()
                     except Exception as inst:
                         d = inst
+                        print(frameinfo.filename, frameinfo.lineno)
+
                         print(d)
                         
                     try:
@@ -113,6 +125,8 @@ class Bots:
                     
                     except Exception as inst:
                         d = inst
+                        print(frameinfo.filename, frameinfo.lineno)
+
                         print(d)
                         from.main import quit_bot
                         quit_bot(thread_no)
@@ -121,6 +135,8 @@ class Bots:
                     
                 except Exception as inst:
                     d = inst
+                    print(frameinfo.filename, frameinfo.lineno)
+
                     print(d)
                     
         
@@ -167,6 +183,8 @@ class Bots:
                         
                     except Exception as inst:
                         d = inst
+                        print(frameinfo.filename, frameinfo.lineno)
+
                         print(d)
                         
                     wait(2)
@@ -189,6 +207,8 @@ class Bots:
                             driver.find_element_by_xpath(f"//*[contains(@class, 'fluid-item__quantity')]/option[{item.quantity}]").click()
                     except Exception as inst:
                         d = inst
+                        print(frameinfo.filename, frameinfo.lineno)
+
                         print("Quantity in dropdown not selected.")
                         print(d)
                     
@@ -202,6 +222,7 @@ class Bots:
                             driver.find_element_by_xpath("//button[contains(@class, 'cia-form__controls__submit')]").click()
                         except Exception as inst:
                             d = inst
+                            print(frameinfo.filename, frameinfo.lineno)
                             print(d)
                             
                         try:
@@ -209,6 +230,7 @@ class Bots:
                             continueToPayment.click()
                         except Exception as inst:
                             d = inst
+                            print(frameinfo.filename, frameinfo.lineno)
                             print(d)
                             
 
@@ -217,6 +239,7 @@ class Bots:
                             typeKeys(security_code, item.security_code)
                         except Exception as inst:
                             d = inst
+                            print(frameinfo.filename, frameinfo.lineno)
                             print(d)
 
                         try:
@@ -226,6 +249,7 @@ class Bots:
                             item.save()
                         except Exception as inst:
                             d = inst
+                            print(frameinfo.filename, frameinfo.lineno)
                             print(d)
                             
                         wait(700)
