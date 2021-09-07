@@ -191,6 +191,11 @@ class Bots:
                     if shouldAddToCart:
                         print('Adding to cart')
                         self.bestbuy_act_like_human()
+                        cards = driver.find_elements_by_xpath("//section[contains(@class, 'card')]")
+                        del cards[-1]
+                        for card in cards:
+                            driver.find_elements_by_xpath("//input[contains(@id, 'fulfillment-shipping')]").click()
+
                         self.bestbuy_click(driver.find_element_by_class_name('add-to-cart-button'))
                         print('Clicking on `Go to cart`')
 
