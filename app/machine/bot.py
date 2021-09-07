@@ -60,6 +60,7 @@ class Bots:
             self.bestbuy_select_country()
             if not item.skip:
                 try:
+                    is_already_signed_in = False
                     try:
                         emailInput = driver.find_element_by_xpath('//*[@id="fld-e"]')
                         passwordInput = driver.find_element_by_xpath('//*[@id="fld-p1"]')
@@ -74,24 +75,24 @@ class Bots:
                         print(frameinfo.filename, frameinfo.lineno)
                         d = inst
                         print(frameinfo.filename, frameinfo.lineno)
-
                         print(d)
+                        is_already_signed_in = True
 
-                    try:
-                        driver.implicitly_wait(25)
-                        is_alert = driver.find_element_by_class_name('cia-alert')
-                        driver.implicitly_wait(15)
-                        print('Till here...')
-                        print('CLicking in Forget Password')
-                        driver.find_element_by_xpath("//span[contains(@class, 'cia-signin__forgot')]//a").click()
-                        print('Clicking in Email Submit')
-                        driver.find_element_by_xpath("//button[contains(@class, 'cia-form__controls__submit')]").click()
-                    except Exception as inst:
-                        d = inst
-                        print(frameinfo.filename, frameinfo.lineno)
-
-                        print(d)
-                        
+                    if not is_already_signed_in:
+                        try:
+                            driver.implicitly_wait(25)
+                            is_alert = driver.find_element_by_class_name('cia-alert')
+                            driver.implicitly_wait(15)
+                            print('Till here...')
+                            print('CLicking in Forget Password')
+                            driver.find_element_by_xpath("//span[contains(@class, 'cia-signin__forgot')]//a").click()
+                            print('Clicking in Email Submit')
+                            driver.find_element_by_xpath("//button[contains(@class, 'cia-form__controls__submit')]").click()
+                        except Exception as inst:
+                            d = inst
+                            print(frameinfo.filename, frameinfo.lineno)
+                            print(d)
+                            
                     try:
                         print('Clicking in Email Verification')
                         driver.find_element_by_xpath("//label[contains(@for, 'email-radio')]//i[contains(@class, 'c-radio-custom-input')]").click()
@@ -136,7 +137,6 @@ class Bots:
                 except Exception as inst:
                     d = inst
                     print(frameinfo.filename, frameinfo.lineno)
-
                     print(d)
                     
         
