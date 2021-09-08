@@ -10,7 +10,6 @@ class Items(models.Model):
         verbose_name="Minimum Price")
     max_price = models.FloatField(null=True, blank=False, 
         verbose_name="Maximum Price", help_text="Remember MAX price must be greater than MIN.")
-    security_code = models.CharField(null=True, blank=False, max_length=500)
     account = models.OneToOneField('Accounts', on_delete=models.SET_NULL, null=True)
     profile_suffix = models.CharField(default="NEW_ITEM", null=True, blank=False, max_length=500,
         help_text='Profile suffix is used for cache storing (Saving account).')
@@ -51,6 +50,15 @@ class Tasks(models.Model):
 
     def __str__(self):
         return "Total plays: "+ str(self.total_plays)
+
+class CardsInfo(models.Model):
+    ending = models.CharField(null=True, blank=False, max_length=4)
+    security_code = models.CharField(null=True, blank=False, max_length=5)
+    def __str__(self):
+        return "Ending: "+ str(self.ending)
+    class Meta:
+        verbose_name = "Cards Info"
+        verbose_name_plural = "Cards Info"
     
 class Playlists(models.Model):
     link = models.URLField()

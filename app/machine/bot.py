@@ -7,7 +7,7 @@ from .cursor_data import x_i, y_i
 from inspect import currentframe, getframeinfo
 frameinfo = getframeinfo(currentframe())
 
-from ..models import Settings
+from ..models import CardsInfo, Settings
 
 class Bots:
     def __init__(self, driver:webdriver.Chrome):
@@ -218,7 +218,7 @@ class Bots:
                             print(frameinfo.filename, frameinfo.lineno)
                             print(d)
                             
-                        print('Checkout now 2')
+                        
                         try:
                             continueToPayment = driver.find_element_by_xpath("//div[contains(@class, 'streamlined__test-styles')]//span[contains(text(), 'Continue to Payment Information')]")
                             continueToPayment.click()
@@ -229,8 +229,13 @@ class Bots:
                             
 
                         try:
-                            security_code = driver.find_element_by_xpath("//input[contains(@class, 'credit-card-form__cvv--warn')]")
-                            typeKeys(security_code, item.security_code)
+                            print('Adding ')
+                            security_code = driver.find_element_by_xpath("//input[@id='cvv'][@name='cvv']")
+                            card_ending = driver.find_element_by_xpath("//div[@class='credit-card-summary__number'][text()]").text.replace('Ending in ','')
+                            print("card_ending:  ", card_ending)
+                            card_info = CardsInfo.objects.filter(ending=card_ending)
+                            if card_info.exists():
+                                typeKeys(security_code, card_info.security_code)
                         except Exception as inst:
                             d = inst
                             print(frameinfo.filename, frameinfo.lineno)
