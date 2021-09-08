@@ -136,9 +136,8 @@ class Bots:
                     driver.switch_to.window(driver.window_handles[1])
                     shouldAddToCart = True
                     try:
-                        cards = driver.find_elements_by_xpath("//section[contains(@class, 'card')]")
-                        del cards[-1]
-                        cards = 1
+                        cards = driver.find_elements_by_xpath("//li//section[contains(@class, 'card')]")
+                        
                         shouldAddToCart = item.quantity != len(cards)
                         for card in cards:
                             card_item = card.find_element_by_xpath("//a[contains(@class, 'fluid-item__image')]")
@@ -173,18 +172,20 @@ class Bots:
                         driver.get("https://www.bestbuy.com/cart/")
 
                     try:
-                        cards = driver.find_elements_by_xpath("//section[contains(@class, 'card')]")
+                        cards = driver.find_elements_by_xpath("//li//section[contains(@class, 'card')]")
                         print(cards)
-                        del cards[-1]
+                        
                         for card in cards:
-                            card.find_elements_by_xpath("//input[contains(@id, 'fulfillment-shipping')]").click()
+                            wait(2)
+                            card.find_element_by_xpath("//input[contains(@id, 'fulfillment-shipping')]").click()
                             # changing postal code
-                            card.find_elements_by_xpath("//button[contains(@class, 'change-zipcode-link')]").click()
+                            card.find_element_by_xpath("//button[contains(@class, 'change-zipcode-link')]").click()
                             # Getting POSTAL input
-                            postalInput = card.find_elements_by_xpath("//input[contains(@class, 'update-zip__zip-input')]").click()
-                            postalInput.sendKeys(Keys.CONTROL + "a")
-                            postalInput.sendKeys(Keys.DELETE)
+                            postalInput = card.find_element_by_xpath("//input[contains(@class, 'update-zip__zip-input')]")
+                            postalInput.send_keys(Keys.CONTROL + "a")
+                            postalInput.send_keys(Keys.DELETE)
                             typeKeys(postalInput, Settings.objects.first().zip_code)
+                            card.find_element_by_xpath("//div[contains(@class, 'update-zip__input')]//button[text()='Update']").click()
 
                         if shouldAddToCart and item.quantity != 1:
                             driver.find_element_by_xpath(f"//*[contains(@class, 'fluid-item__quantity')]/option[{item.quantity}]").click()
