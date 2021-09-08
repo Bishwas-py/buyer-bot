@@ -87,6 +87,10 @@ class Bots:
                             
                         try:
                             # Clicking in Email Verification')
+                            try:
+                                driver.find_element_by_xpath("//button[contains(@data-track, 'Reset Password - Enter')]").click()
+                            except:
+                                print("No need to click on Reset Password!")
                             driver.find_element_by_xpath("//label[contains(@for, 'email-radio')]//i[contains(@class, 'c-radio-custom-input')]").click()
                             driver.find_element_by_xpath("//div[contains(@class, 'cia-form__controls')]//button[contains(@class, 'cia-form__controls__submit')]").click()
                             
