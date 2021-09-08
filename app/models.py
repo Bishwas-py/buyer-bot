@@ -12,12 +12,12 @@ class Items(models.Model):
         verbose_name="Maximum Price", help_text="Remember MAX price must be greater than MIN.")
     security_code = models.CharField(null=True, blank=False, max_length=500)
     account = models.OneToOneField('Accounts', on_delete=models.SET_NULL, null=True)
-    skip = models.BooleanField(default=False, null=True, blank=False)
+    profile_suffix = models.CharField(default="NEW_ITEM", null=True, blank=False, max_length=500,
+        help_text='Profile suffix is used for cache storing (Saving account).')
+    skip = models.BooleanField(default=False, null=True, blank=False,
+        help_text='Enable `Skip` if you think login process is not required to do again and again.')
     bought = models.BooleanField(default=False)
-    headless = models.BooleanField(default=False, help_text='Turn on Headless Mode if you want to run bot without browser')
     is_test = models.BooleanField(default=False, help_text="Enable test only for testing purpose.")
-    profile_prefix = models.CharField(default="NEW_ITEM", null=True, blank=False, max_length=500,
-        help_text='Profile Prefix is used for cache storing (Saving account).')
     class Meta:
         verbose_name = "Item"
         verbose_name_plural = "Items"
@@ -38,10 +38,9 @@ class Items(models.Model):
         super(Items, self).save(*args, **kwargs)
 
 class Settings(models.Model):
-    headless = models.BooleanField(default=True)
-    maximized = models.BooleanField(default=True)
+    headless = models.BooleanField(default=False)
     refresh_delay = models.IntegerField(default=600)
-
+    zip_code = models.CharField(null=True, blank=False, max_length=7)
     class Meta:
         verbose_name = "Setting"
         verbose_name_plural = "Settings"

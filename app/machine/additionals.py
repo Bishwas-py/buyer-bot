@@ -1,3 +1,4 @@
+from app.models import Settings
 from random import choice
 from time import sleep as wait, time
 from selenium.webdriver.support.ui import WebDriverWait
@@ -19,36 +20,7 @@ def typeKeys(input, key:str) -> None:
     wait(choice([0.6, 0.5, 0.1, 0.9]))
 
 
-
-class waitGetElm:
-    def __init__(self, driver:webdriver.Chrome):
-        self.driver = driver
-
-    def now(self, by_, object, multi=False, waitTime=10):
-        waitTill = WebDriverWait(self.driver, waitTime)
-        if multi:
-            elementEC = EC.visibility_of_all_elements_located((by_, object))
-        if not multi:
-            elementEC = EC.visibility_of_element_located((by_, object))
-        return waitTill.until(elementEC) 
-    
-    def now_clikable(self, by_, object, waitTime=10):
-        waitTill = WebDriverWait(self.driver, waitTime)
-        elementEC = EC.element_to_be_clickable((by_, object))
-        return waitTill.until(elementEC) 
-
-    def now_visible(self, by_, object, waitTime=10):
-        waitTill = WebDriverWait(self.driver, waitTime)
-        elementEC = EC.visibility_of_element_located((by_, object))
-        return waitTill.until(elementEC) 
-    
-    def now_present(self, by_, object, waitTime=10):
-        waitTill = WebDriverWait(self.driver, waitTime)
-        elementEC = EC.presence_of_all_elements_located((by_, object))
-        return waitTill.until(elementEC)
-    
-
-def getDriver(profile:str, headless=False) -> webdriver.Chrome:
+def getDriver(profile:str) -> webdriver.Chrome:
     options = webdriver.ChromeOptions()
     options.add_argument('--start-maximized')
     options.add_argument('--no-sandbox') # Bypass OS security model
@@ -57,7 +29,7 @@ def getDriver(profile:str, headless=False) -> webdriver.Chrome:
     options.add_experimental_option('useAutomationExtension', False)
     options.add_argument("--remote-debugging-port=9222")  # this
 
-    if headless:
+    if Settings.objects.first().headless:
         options.add_argument('--headless')
 
     options.add_argument(f'--user-data-dir=profile/{profile}')

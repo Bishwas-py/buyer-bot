@@ -14,7 +14,7 @@ def threader():
     items = Items.objects.all()
     
     for item in items:
-        driver = getDriver(f"{item.account.email.replace('@', '_at_')}_{item.profile_prefix}", item.headless)
+        driver = getDriver(f"{item.account.email.replace('@', '_at_')}_{item.profile_suffix}")
         bot = Bots(driver)
         t = threading.Thread(target=bot.bestbuy, args=(item, item.id,), name=f'Bestbuy Bot {item.id}')
         t.start()
@@ -32,7 +32,7 @@ def threader():
 def run_isolated_bot(index:int):
     thread = threads[index]
     item = thread['item']
-    driver = getDriver(f"profile/{item.account.email.replace('@', '_at_')}_{item.profile_prefix}", item.headless)
+    driver = getDriver(f"profile/{item.account.email.replace('@', '_at_')}_{item.profile_suffix}")
     bot = Bots(driver)
     thread = threads[index]
     t = threading.Thread(target=bot.bestbuy, args=(item, index,), name=f'Bestbuy Bot {index}')

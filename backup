@@ -4,7 +4,7 @@ def bestbuy_verification(self, item):
     driver = self.driver
     continueVerification = item.need_verification
     while continueVerification:
-        print('Doing Verification...')
+        # Doing Verification...')
         try:
             verificationCodeinput = driver.find_element_by_xpath('//*[@id="verificationCode"]')
             typeKeys(verificationCodeinput, get_verification_code(FindWith.BESTBUY))
@@ -19,3 +19,44 @@ def bestbuy_verification(self, item):
         confNewPasswordInput = driver.find_element_by_xpath('//*[@id="reenterPassword"]')
         typeKeys(newPasswordInput, config("BESTBUY_NEWPASSWORD"))
         typeKeys(confNewPasswordInput, config("BESTBUY_NEWPASSWORD"))
+
+
+
+class waitGetElm:
+    def __init__(self, driver:webdriver.Chrome):
+        self.driver = driver
+
+    def now(self, by_, object, multi=False, waitTime=10):
+        waitTill = WebDriverWait(self.driver, waitTime)
+        if multi:
+            elementEC = EC.visibility_of_all_elements_located((by_, object))
+        if not multi:
+            elementEC = EC.visibility_of_element_located((by_, object))
+        return waitTill.until(elementEC) 
+    
+    def now_clikable(self, by_, object, waitTime=10):
+        waitTill = WebDriverWait(self.driver, waitTime)
+        elementEC = EC.element_to_be_clickable((by_, object))
+        return waitTill.until(elementEC) 
+
+    def now_visible(self, by_, object, waitTime=10):
+        waitTill = WebDriverWait(self.driver, waitTime)
+        elementEC = EC.visibility_of_element_located((by_, object))
+        return waitTill.until(elementEC) 
+    
+    def now_present(self, by_, object, waitTime=10):
+        waitTill = WebDriverWait(self.driver, waitTime)
+        elementEC = EC.presence_of_all_elements_located((by_, object))
+        return waitTill.until(elementEC)
+
+            
+def clear_cart(self):
+    driver = self.driver
+    getElement = waitGetElm(driver)
+    driver.get('https://www.bestbuy.com/cart')
+    removeBtnPath = '//a[@class="btn-default-link link-styled-button cart-item__remove"][contains(text(), "Remove")]'
+    removeBtn = driver.find_elements_by_xpath(removeBtnPath)
+    for i in range(len(removeBtn)):
+        button = getElement.now_clikable(By.XPATH, f"{removeBtnPath}[{i+1}]")
+        button.click()
+    driver.quit()
