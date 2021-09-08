@@ -62,6 +62,13 @@ class Bots:
                         d = inst
                         print(frameinfo.filename, frameinfo.lineno)
                         print(d)
+                    
+                    try:
+                        driver.implicitly_wait(25)
+                        is_alert = driver.find_element_by_class_name('cia-alert')
+                        driver.implicitly_wait(15)
+                        is_already_signed_in = False
+                    except:
                         is_already_signed_in = True
 
                     if not is_already_signed_in:
