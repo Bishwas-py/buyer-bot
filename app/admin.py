@@ -21,3 +21,4 @@ class SettingsAdmin(admin.ModelAdmin):
 admin.site.register(Items, ItemsAdmin)
 admin.site.register(Settings, SettingsAdmin)
 admin.site.register(Accounts)
+admin.site.register(CardsInfo)
