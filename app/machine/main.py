@@ -32,7 +32,7 @@ def threader():
 def run_isolated_bot(index:int):
     thread = threads[index]
     item = thread['item']
-    driver = getDriver(f"profile/{item.account.email.replace('@', '_at_')}_{item.profile_suffix}")
+    driver = getDriver(f"{item.account.email.replace('@', '_at_')}_{item.profile_suffix}")
     bot = Bots(driver)
     thread = threads[index]
     t = threading.Thread(target=bot.bestbuy, args=(item, index,), name=f'Bestbuy Bot {index}')
