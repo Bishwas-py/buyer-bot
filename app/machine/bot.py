@@ -235,7 +235,7 @@ class Bots:
                             print("card_ending:  ", card_ending)
                             card_info = CardsInfo.objects.filter(ending=card_ending)
                             if card_info.exists():
-                                typeKeys(security_code, card_info.security_code)
+                                typeKeys(security_code, card_info[0].security_code)
                         except Exception as inst:
                             d = inst
                             print(frameinfo.filename, frameinfo.lineno)
