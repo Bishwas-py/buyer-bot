@@ -7,7 +7,7 @@ from selenium.webdriver.common.action_chains import ActionChains
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.common.by import By
 from selenium import webdriver
-from chromedriver_py import binary_path
+import chromedriver_binary
 
 def get_price(price) -> float:
     price = float(price.text.split('$')[-1].strip('\n'))

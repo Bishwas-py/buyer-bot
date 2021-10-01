@@ -3,7 +3,7 @@ beautifulsoup4==4.9.3
 bs4==0.0.1
 certifi==2021.5.30
 charset-normalizer==2.0.2
-chromedriver-py==91.0.4472.19
+chromedriver-binary==94.0.4606.61.0
 Django==3.2.5
 django-cards-admin==0.3.1
 django-jazzmin==2.4.7

@@ -1,9 +1,7 @@
 import sys
 import pathlib
 path = str(pathlib.Path(__file__).parent.absolute()).replace('\\','/')
-from selenium import webdriver
 import threading
-from chromedriver_py import binary_path # this will get you the path variable
 from.additionals import getDriver
 from.bot import Bots
 from..models import Items
