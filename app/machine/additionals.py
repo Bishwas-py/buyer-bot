@@ -33,7 +33,7 @@ def getDriver(profile:str) -> webdriver.Chrome:
         options.add_argument('--headless')
 
     options.add_argument(f'--user-data-dir=profile/{profile}')
-    driver = webdriver.Chrome(executable_path=binary_path, options=options)
+    driver = webdriver.Chrome(options=options)
     driver.implicitly_wait(15)
     return driver
 
