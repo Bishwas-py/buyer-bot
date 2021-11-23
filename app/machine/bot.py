@@ -72,6 +72,7 @@ class Bots:
                         is_already_signed_in = True
 
                     if not is_already_signed_in or item.force_signin:
+                        print("\nFORCING TO SIGNIN\n")
                         try:
                             driver.implicitly_wait(25)
                             is_alert = driver.find_element_by_class_name('cia-alert')
@@ -91,13 +92,16 @@ class Bots:
                                 driver.find_element_by_xpath("//button[contains(@data-track, 'Reset Password - Enter')]").click()
                             except:
                                 print("No need to click on Reset Password!")
-                            driver.find_element_by_xpath("//label[contains(@for, 'email-radio')]//i[contains(@class, 'c-radio-custom-input')]").click()
+                            try:
+                                driver.find_element_by_xpath("//label[contains(@for, 'email-radio')]//i[contains(@class, 'c-radio-custom-input')]").click()
+                            except:
+                                driver.find_elements_by_xpath("//input[contains(@class, 'c-radio-input')]")[-1].click()
                             driver.find_element_by_xpath("//div[contains(@class, 'cia-form__controls')]//button[contains(@class, 'cia-form__controls__submit')]").click()
                             
                             # Entering Verification Code')
                             verification_code = driver.find_element_by_xpath("//div[contains(@class, 'tb-input-wrapper-full-width')]//input[contains(@class, 'tb-input')]")
                             wait(12)
-                            # Typing Verification Code')
+                            # Typing Verification Code') 
 
                             continue_verification = True
                             while continue_verification:
