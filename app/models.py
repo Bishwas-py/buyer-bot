@@ -15,6 +15,8 @@ class Items(models.Model):
         help_text='Profile suffix is used for cache storing (Saving account).')
     skip = models.BooleanField(default=False, null=True, blank=False,
         help_text='Enable `Skip` if you think login process is not required to do again and again.')
+    force_signin = models.BooleanField(default=False, null=True, blank=False,
+        help_text='Enable this if you wanna force sign in in to the bot.')
     bought = models.BooleanField(default=False)
     is_test = models.BooleanField(default=False, help_text="Enable test only for testing purpose.")
     class Meta:

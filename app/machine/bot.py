@@ -71,7 +71,7 @@ class Bots:
                     except:
                         is_already_signed_in = True
 
-                    if not is_already_signed_in:
+                    if not is_already_signed_in or item.force_signin:
                         try:
                             driver.implicitly_wait(25)
                             is_alert = driver.find_element_by_class_name('cia-alert')
